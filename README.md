@@ -1,3 +1,5 @@
+Working Document
+
 # infrastructure-lab
 
 **A hands-on lab for building, securing, and rebuilding cloud-like infrastructure.**
@@ -15,6 +17,48 @@ monitoring, and schedulers such as Nomad or Kubernetes.
 Everything is defined in Git. Machines are expected to be rebuilt. Failure is a
 feature. The focus is on understanding *why* systems are designed the way they
 are, not just *how* to make them run.
+
+# Cloud Lab – Infrastructure Engineering on a Single Machine
+
+This repository contains a complete, rebuildable infrastructure lab designed
+to mirror modern cloud platforms using a single Proxmox host.
+
+The goal is not to run services forever, but to **practice designing,
+automating, breaking, and rebuilding infrastructure** the way cloud providers
+and platform teams do.
+
+## What this lab covers
+
+- Proxmox as a hypervisor
+- Terraform-driven VM lifecycle
+- cloud-init as the machine control plane
+- Per-VM disk encryption (Tang + Clevis)
+- Network isolation, routing, VPNs
+- Central identity with FreeIPA
+- SSH certificates (no authorized_keys sprawl)
+- Monitoring with Prometheus and Grafana
+- Disposable workloads (Nomad / Kubernetes / Slurm)
+
+Module 0 – Principles & Threat Model
+Module 1 – Base Platform (Proxmox + Storage)
+Module 2 – Networking & Routing
+Module 3 – Infrastructure as Code (Terraform)
+Module 4 – Cloud-Init as the Control Plane
+Module 5 – VM-level Encryption (Tang + Clevis)
+Module 6 – Identity & Access (FreeIPA + SSH certs)
+Module 7 – Monitoring & Observability
+Module 8 – Workload Platforms (Nomad / k8s / Slurm)
+Module 9 – Rebuilds, Rotation, and Failure
+
+## Design principles
+
+- Rebuild instead of repair
+- Automation first
+- No snowflake machines
+- Per-VM identity and encryption
+- Cloud-like trust boundaries
+
+This is not a homelab tutorial. It is a **platform engineering lab**.
 
 ## Who this is for
 
