@@ -42,15 +42,17 @@ and platform teams do.
 ## Module list
 
 - Module 0 – Principles & Threat Model
-- Module 1 – Base Platform (Proxmox + Storage)
-- Module 2 – Networking & Routing
-- Module 3 – Infrastructure as Code (Terraform)
-- Module 4 – Cloud-Init as the Control Plane
-- Module 5 – VM-level Encryption (Tang + Clevis)
-- Module 6 – Identity & Access (FreeIPA + SSH certs)
-- Module 7 – Monitoring & Observability
-- Module 8 – Workload Platforms (Nomad / k8s / Slurm)
-- Module 9 – Rebuilds, Rotation, and Failure
+- Module 1 – Proxmox Baseline
+- Module 2 – Terraform & VM Lifecycle
+- Module 3 – VM Networking Basics
+- Module 4 – Network Architecture & Isolation
+- Module 5 – cloud-init as Control Plane
+- Module 6 – VM-Level Encryption (Tang + Clevis)
+- Module 7 – Identity & SSH Certificates
+- Module 8 – Monitoring & Observability
+- Module 9 – Workload Platforms
+- Module 10 – Operations & Failure
+
 
 ## Design principles
 
