@@ -1,3 +1,4 @@
 graph TD
-  box1 --> |on the line| box2
-  
+  Router1 --> |On the line| Box2
+  Box1 --> Box3
+  Box1 --> Box4
