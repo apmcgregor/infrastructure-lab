@@ -39,16 +39,18 @@ and platform teams do.
 - Monitoring with Prometheus and Grafana
 - Disposable workloads (Nomad / Kubernetes / Slurm)
 
-Module 0 – Principles & Threat Model
-Module 1 – Base Platform (Proxmox + Storage)
-Module 2 – Networking & Routing
-Module 3 – Infrastructure as Code (Terraform)
-Module 4 – Cloud-Init as the Control Plane
-Module 5 – VM-level Encryption (Tang + Clevis)
-Module 6 – Identity & Access (FreeIPA + SSH certs)
-Module 7 – Monitoring & Observability
-Module 8 – Workload Platforms (Nomad / k8s / Slurm)
-Module 9 – Rebuilds, Rotation, and Failure
+## Module list
+
+- Module 0 – Principles & Threat Model
+- Module 1 – Base Platform (Proxmox + Storage)
+- Module 2 – Networking & Routing
+- Module 3 – Infrastructure as Code (Terraform)
+- Module 4 – Cloud-Init as the Control Plane
+- Module 5 – VM-level Encryption (Tang + Clevis)
+- Module 6 – Identity & Access (FreeIPA + SSH certs)
+- Module 7 – Monitoring & Observability
+- Module 8 – Workload Platforms (Nomad / k8s / Slurm)
+- Module 9 – Rebuilds, Rotation, and Failure
 
 ## Design principles
 
