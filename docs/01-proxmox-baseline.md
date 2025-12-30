@@ -1,210 +1,148 @@
-# Proxmox Baseline
+# Module 01 – Proxmox Baseline
 
-## Storage layout
+## Why Proxmox comes first
 
-- 2×500GB HDD → ZFS mirror → Proxmox OS
-- NVMe:
-  - ZFS mirror → management VMs
-  - LVM-thin → lab / disposable VMs
+Before any automation, networking, or security work can happen, there needs to be
+a stable place for it to live. In this lab, that foundation is a single Proxmox
+host.
 
-## What is NOT encrypted
+Proxmox is not treated as a cloud platform or a control plane in its own right.
+It is treated as **boring, trusted infrastructure**—a substrate on which
+everything else runs. The goal of this module is not to master Proxmox features, I've no doubt there's a course somewhere on that,
+but to establish a predictable baseline that can support frequent rebuilds.
 
-- Proxmox OS
-- Hypervisor storage pools
-
-## Why
-
-- Host must boot unattended
-- Encryption is enforced at VM level
-
-# Lab 01 – Proxmox Baseline
-
-## Purpose of this lab
-
-This lab establishes the **single physical foundation** for everything that
-follows. The goal is not to tune Proxmox perfectly, but to create a **stable,
-boring baseline** that can host rebuildable infrastructure.
-
-At the end of this lab you should have:
-- A working Proxmox installation
-- Reliable remote access
-- A simple, understandable storage layout
-- A baseline network that is intentionally minimal
-
-You should **not** attempt to optimize performance, security, or isolation yet.
-Those will come later.
+If the host itself is unstable or over-engineered, everything built on top of it
+becomes harder to reason about.
 
 ---
 
-## Minimum system requirements (good guesses)
+## The role of the hypervisor in this lab
 
-This lab is intentionally realistic. You do *not* need enterprise hardware, but
-you do need enough headroom to rebuild systems frequently.
+In cloud environments, the hypervisor layer is intentionally invisible. You do
+not configure it per workload, and you rarely interact with it directly. This
+lab mirrors that model.
 
-### Absolute minimum (will work, but tight)
+The Proxmox host is:
+- Trusted while running
+- Managed infrequently
+- Kept as simple as possible
+- Rebooted when necessary without ceremony
 
-- **CPU:** 8 cores (logical cores are fine)
-- **RAM:** 32 GB
-- **Storage:**
-  - 1 × SSD (≥ 240 GB) for Proxmox OS
-  - 1 × SSD or NVMe for VM storage
-- **Networking:** 1 × 1 GbE NIC
-
-This is enough to complete the labs, but you will need to be conservative with
-VM sizes.
+All meaningful infrastructure decisions happen *above* this layer.
 
 ---
 
-### Recommended minimum (comfortable learning)
+## Keep the baseline intentionally simple
 
-- **CPU:** 12–16 cores
-- **RAM:** 64 GB
-- **Storage:**
-  - 2 × SSDs (mirrored) for Proxmox OS
-  - 1–2 × NVMe drives for VM storage
-- **Networking:** 1–10 GbE NIC
-
-This allows:
-- Multiple concurrent VMs
-- Monitoring stack
-- Identity services
-- Rebuilds without constant resource pressure
-
----
-
-### Notes on hardware choices
-
-- **ECC memory** is nice to have, not required
-- **Consumer CPUs** are perfectly acceptable
-- **Older enterprise hardware** is fine if power/noise are acceptable
-- **TPM is not required** for this lab
-
-If your system roughly meets the recommended minimum, it is sufficient.
-
->20251229 - On a personal note I found a good workstation on eBay for 249GBP with 128GB RAM and 2 x Xeon E5-2680
-
----
-
-## Checklist: hardware readiness
-
-Before installing anything, confirm the following:
-
-### CPU & memory
-- [ ] At least 8 logical CPU cores available
-- [ ] At least 32 GB RAM installed
-- [ ] Hardware virtualization enabled in BIOS (VT-x / AMD-V)
-- [ ] IOMMU support is optional, not required yet
-
-### Storage
-- [ ] Dedicated disk(s) for Proxmox OS
-- [ ] Separate disk(s) for VM storage (SSD or NVMe)
-- [ ] You are comfortable wiping these disks
-
-### Networking
-- [ ] At least one NIC connected to your LAN
-- [ ] DHCP available on your LAN
-- [ ] You understand this is *temporary* exposure to your home network
-
-### Operational mindset
-- [ ] You are okay reinstalling Proxmox if needed
-- [ ] You are not storing irreplaceable data on this system
-- [ ] You accept that this machine may be rebooted frequently
-
-If any of these are uncomfortable, pause here and reconsider.
-
----
-
-## Installation goals (what “done” looks like)
-
-You do **not** need a perfect setup. You need a predictable one.
-
-### Proxmox installation
-- [ ] Proxmox installed from official ISO
-- [ ] Latest stable release
-- [ ] Root password set securely
-- [ ] Email configured (optional)
-
-### Storage layout (baseline)
-
-Recommended baseline:
-- **Proxmox OS:** ZFS mirror if you have two disks, otherwise single disk
-- **VM storage:** simple ZFS pool or LVM-thin
+This module emphasizes restraint.
 
 At this stage:
-- ❌ No encryption required
-- ❌ No special tuning
-- ❌ No Ceph
+- Storage should be straightforward
+- Networking should be minimal
+- Security should be adequate, not maximal
+- Defaults are usually correct
 
-You can revisit storage later.
-
----
-
-### Networking (keep it boring)
-
-- [ ] Default bridge (`vmbr0`) exists
-- [ ] Bridge is attached to physical NIC
-- [ ] Proxmox host has a stable IP
-- [ ] Web UI reachable from your workstation
-
-Do **not**:
-- Create VLANs yet
-- Add firewall rules yet
-- Attempt isolation yet
-
-This is intentional.
+Complexity introduced too early becomes legacy that must be supported later.
 
 ---
 
-## Checklist: post-install verification
+## Storage as a foundation, not a feature
 
-Once Proxmox is installed, confirm:
+Storage in this lab is treated as **capacity and reliability**, not as a place
+to demonstrate advanced features.
 
-- [ ] You can log in to the web UI
-- [ ] You can SSH to the host
-- [ ] The host survives a reboot
-- [ ] Storage is visible and healthy
-- [ ] No errors in the Proxmox dashboard
+The baseline assumptions are:
+- The Proxmox OS lives on dedicated storage
+- VM storage is separate from the OS
+- Redundancy is preferred if available
+- Encryption is deferred to the VM layer
 
-If something looks wrong, now is the time to reinstall.
-
----
-
-## What you should *not* do yet
-
-Resist the urge to:
-- Harden the host
-- Encrypt disks
-- Build networks
-- Create production-style layouts
-- Tune ZFS aggressively
-
-Those decisions depend on later modules.
+This mirrors cloud platforms, where disk encryption and identity are handled per
+workload rather than per hypervisor.
 
 ---
 
-## Why this lab is intentionally simple
+## Networking is plumbing, not architecture (yet)
 
-In cloud environments:
-- The hypervisor is boring
-- The host is trusted
-- Complexity lives *above* the base layer
+At this stage, networking exists only to provide:
+- Management access to the host
+- Basic connectivity for VMs
+- A path to automation tools
 
-This lab mirrors that model.
+A single bridge connected to the physical network is sufficient.
 
-A simple, stable Proxmox host is a feature, not a limitation.
-
----
-
-## Lab 01 – Completion criteria
-
-You have completed this lab if:
-- Proxmox is installed and reachable
-- You understand your hardware limits
-- You have a simple storage layout
-- You are ready to destroy and recreate VMs freely
-
-You should feel slightly underwhelmed. That’s correct.
+Isolation, routing, firewalls, and segmentation are intentionally deferred until
+later modules, once VM lifecycle management is reliable.
 
 ---
 
-Everything from this point forward should be rebuildable.
+## What “done” looks like
+
+A correct Proxmox baseline is unremarkable.
+
+You should be able to:
+- Reach the web interface reliably
+- SSH to the host
+- Reboot the host without surprises
+- Create and delete test VMs manually (for now)
+
+If your Proxmox setup feels exciting or clever, it is probably too complex for
+this stage.
+
+---
+
+## What this module is *not* about
+
+This module does **not** aim to:
+- Harden Proxmox to production standards
+- Use every ZFS feature
+- Build complex networking
+- Enable high availability
+- Solve multi-node clustering
+
+Those are valid topics—but not yet.
+
+---
+
+## Why this simplicity matters later
+
+Every later module depends on the assumptions established here.
+
+If:
+- The host is stable
+- Storage behavior is predictable
+- Networking is understandable
+
+Then failures higher up the stack are easier to diagnose and recover from.
+
+This lab optimizes for **clarity under failure**, not maximum performance or
+security on day one.
+
+---
+
+## Operational mindset
+
+You should treat the Proxmox host as:
+- Important, but not fragile
+- Stable, but not sacred
+- A tool, not a project
+
+If you find yourself tuning or perfecting the host instead of building on top of
+it, step back. That instinct will be challenged repeatedly in later modules.
+
+---
+
+## What comes next
+
+In the next module, you will stop using the Proxmox UI to create machines and
+introduce Terraform as the authoritative source of truth for VM lifecycle.
+
+Once that shift happens, the role of the Proxmox UI changes—from control plane to
+observability tool.
+
+Before moving on, make sure you understand:
+- Why the hypervisor is intentionally boring
+- Why complexity is deferred
+- Why VM rebuildability matters more than host tuning
+
+These assumptions will not be revisited later.
