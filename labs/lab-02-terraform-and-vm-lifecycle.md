@@ -208,7 +208,7 @@ Plan completes successfully
 
     Terraform state is empty
 
-Exercise 5 – Declare your first VM
+### Exercise 5 – Declare your first VM
 
 (Local workstation)
 
@@ -242,7 +242,7 @@ Terraform plans to create exactly one VM
 
     No unexpected resources appear
 
-Exercise 6 – Apply and observe
+### Exercise 6 – Apply and observe
 
 (Local workstation + Proxmox UI)
 
@@ -269,7 +269,7 @@ VM appears in Proxmox
 
     Terraform apply completes successfully
 
-Exercise 7 – Destroy without hesitation
+### Exercise 7 – Destroy without hesitation
 
 (Local workstation)
 
@@ -291,7 +291,7 @@ If this feels uncomfortable, pause and reflect.
 Failure scenarios (intentional exercises)
 
 These failures should be triggered on purpose.
-Failure 1 – Authentication failure
+### Failure 1 – Authentication failure
 
     Invalidate the API token
 
@@ -303,7 +303,7 @@ Failure 1 – Authentication failure
 
 Lesson:
 Terraform failures are early and explicit.
-Failure 2 – Configuration drift
+### Failure 2 – Configuration drift
 
     Create a VM with Terraform
 
@@ -313,7 +313,7 @@ Failure 2 – Configuration drift
 
 Lesson:
 Manual changes are visible and temporary.
-Failure 3 – State mismatch
+### Failure 3 – State mismatch
 
     Create a VM
 
@@ -323,7 +323,7 @@ Failure 3 – State mismatch
 
 Lesson:
 Terraform reconciles intent, not reality.
-Failure 4 – Bad configuration
+### Failure 4 – Bad configuration
 
     Intentionally misconfigure the VM resource
 
@@ -337,7 +337,8 @@ Failure 4 – Bad configuration
 
 Lesson:
 Rebuilds are faster and safer than debugging snowflakes.
-Lab 02 – Completion criteria
+
+### Lab 02 – Completion criteria
 
 You have completed this lab if:
 
@@ -349,7 +350,7 @@ VMs exist only when Terraform declares them
 
 You destroyed at least one VM
 
-    You experienced and recovered from a failure
+You experienced and recovered from a failure
 
 If a VM exists that Terraform does not know about, this lab is not complete.
 What comes next
