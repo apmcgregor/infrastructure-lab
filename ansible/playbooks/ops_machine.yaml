@@ -1,0 +1,16 @@
+---
+- name: Configure operations machines
+  hosts: ops_machines
+  become: true
+
+  pre_tasks:
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 3600
+
+  roles:
+    - qemu_guest_agent
+    - git
+    - ansible
+    - terraform

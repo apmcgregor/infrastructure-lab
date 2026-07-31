@@ -1,0 +1,50 @@
+---
+# tasks file for roles/terraform
+- name: Install prerequisites
+  ansible.builtin.apt:
+    name:
+      - wget
+      - gpg
+      - lsb-release
+    state: present
+    update_cache: true
+
+- name: Create keyrings directory
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+
+- name: Download HashiCorp signing key
+  ansible.builtin.get_url:
+    url: https://apt.releases.hashicorp.com/gpg
+    dest: /tmp/hashicorp.asc
+    mode: "0644"
+
+- name: Dearmor HashiCorp signing key
+  ansible.builtin.command:
+    cmd: >
+      gpg --dearmor
+      -o /etc/apt/keyrings/hashicorp-archive-keyring.gpg
+      /tmp/hashicorp.asc
+  args:
+    creates: /etc/apt/keyrings/hashicorp-archive-keyring.gpg
+
+- name: Add HashiCorp repository
+  ansible.builtin.apt_repository:
+    repo: >
+      deb [signed-by=/etc/apt/keyrings/hashicorp-archive-keyring.gpg]
+      https://apt.releases.hashicorp.com
+      {{ ansible_distribution_release }}
+      main
+    filename: hashicorp
+    state: present
+
+- name: Update apt cache with new terraform apt repo
+  ansible.builtin.apt:
+    update_cache: true
+
+- name: Install Terraform
+  ansible.builtin.apt:
+    name: terraform
+    state: present
